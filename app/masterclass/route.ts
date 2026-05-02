@@ -171,26 +171,25 @@ function handleSubmit(){
 function buildResponsiveStyle() {
   return `<style>
 .back-home-link{
-  position:fixed;
-  left:24px;
-  top:92px;
-  z-index:120;
+  position:absolute;
+  left:48px;
+  top:104px;
+  z-index:20;
   display:inline-flex;
   align-items:center;
-  gap:10px;
-  padding:12px 18px;
+  justify-content:center;
+  width:42px;
+  height:42px;
   border-radius:999px;
   text-decoration:none;
-  font-family:var(--mono);
-  font-size:11px;
-  letter-spacing:0.12em;
-  text-transform:uppercase;
   color:var(--text);
-  background:rgba(8,17,31,0.86);
+  background:rgba(8,17,31,0.72);
   border:1px solid var(--border);
   backdrop-filter:blur(14px);
   -webkit-backdrop-filter:blur(14px);
-  box-shadow:0 16px 32px rgba(0,0,0,0.24);
+  box-shadow:0 12px 24px rgba(0,0,0,0.2);
+  font-size:22px;
+  line-height:1;
 }
 
 .back-home-link:hover{
@@ -229,10 +228,10 @@ function buildResponsiveStyle() {
 
 @media (max-width: 640px){
   .back-home-link{
-    left:14px;
-    right:14px;
-    top:78px;
-    justify-content:center;
+    left:16px;
+    top:88px;
+    width:40px;
+    height:40px;
   }
 
   .facilitators-grid{
@@ -276,7 +275,7 @@ export async function GET() {
   html = html.replace("</head>", `${buildResponsiveStyle()}\n</head>`);
   html = html.replace(
     "<main>",
-    `<main>\n<a href="/" class="back-home-link">← Back to Main Site</a>`
+    `<main>\n<a href="/" class="back-home-link" aria-label="Back to main site">←</a>`
   );
   html = html.replace(
     /<div class="countdown-label">[\s\S]*?<\/div>/,
