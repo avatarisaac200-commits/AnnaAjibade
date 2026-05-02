@@ -16,9 +16,9 @@ const stats = [
     sub: "Across multiple social impact contexts",
   },
   {
-    value: 15,
-    prefix: "NGN ",
-    suffix: "M+",
+    value: 20000,
+    prefix: "USD ",
+    suffix: "",
     label: "Funding mobilised",
     sub: "Through structured partnerships and support",
   },

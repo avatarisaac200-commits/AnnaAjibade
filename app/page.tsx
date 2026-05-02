@@ -4,6 +4,7 @@ import Marquee from "@/components/Marquee";
 import About from "@/components/About";
 import Services from "@/components/Services";
 import Impact from "@/components/Impact";
+import Awards from "@/components/Awards";
 import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
@@ -17,6 +18,7 @@ export default function Home() {
       <About />
       <Services />
       <Impact />
+      <Awards />
       <Testimonials />
       <Contact />
       <Footer />

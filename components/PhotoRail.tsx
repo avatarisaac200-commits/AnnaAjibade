@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
+import { HiArrowLeft, HiArrowRight } from "react-icons/hi";
 import ImageLightbox, { LightboxItem } from "@/components/ImageLightbox";
 
 type Slide = {
@@ -29,7 +30,7 @@ const slides: Slide[] = [
     src: "/photos/amara-3.jpg",
     alt: "Anna Ajibade portrait three",
     label: "Stakeholder Builder",
-    note: "Government, donor, community",
+    note: "Multi-stakeholder alignment",
   },
   {
     src: "/photos/amara-4.jpg",
@@ -48,19 +49,17 @@ const slides: Slide[] = [
 export default function PhotoRail() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
     if (selectedIndex !== null) return;
 
     const timer = window.setInterval(() => {
       setActiveIndex((current) => (current + 1) % slides.length);
-    }, 3600);
+    }, 4200);
 
     return () => window.clearInterval(timer);
   }, [selectedIndex]);
-
-  const nextIndex = (activeIndex + 1) % slides.length;
-  const tailIndex = (activeIndex + 2) % slides.length;
 
   const lightboxItems: LightboxItem[] = useMemo(
     () =>
@@ -68,111 +67,142 @@ export default function PhotoRail() {
         src: slide.src,
         alt: slide.alt,
         caption: "Anna Ajibade",
-        subcaption: `${slide.label} · ${slide.note}`,
+        subcaption: `${slide.label} - ${slide.note}`,
       })),
     []
   );
 
+  const goTo = (index: number) => {
+    setActiveIndex((index + slides.length) % slides.length);
+  };
+
   return (
     <>
-      <div className="relative overflow-hidden rounded-[2.25rem] bg-[radial-gradient(circle_at_top_left,rgba(96,165,250,0.14),transparent_38%),linear-gradient(180deg,rgba(255,255,255,0.76)_0%,rgba(219,234,254,0.58)_100%)] p-4 shadow-[0_28px_90px_rgba(15,23,42,0.12)] dark:bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.16),transparent_38%),linear-gradient(180deg,rgba(15,23,42,0.82)_0%,rgba(8,15,30,0.95)_100%)] md:p-6">
-        <div className="grid items-center gap-8 xl:grid-cols-[1.15fr_0.85fr]">
-          <div className="relative mx-auto h-[18rem] w-full max-w-[42rem] md:h-[24rem] xl:mx-0 xl:h-[28rem] xl:max-w-none">
-            <motion.button
-              type="button"
-              onClick={() => setSelectedIndex(tailIndex)}
-              animate={{ rotate: -9, x: 28, y: 22, scale: 0.9 }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute inset-y-6 right-0 z-0 hidden w-[52%] cursor-zoom-in overflow-hidden rounded-[1.8rem] opacity-35 shadow-[0_18px_50px_rgba(15,23,42,0.16)] lg:block"
-              aria-label={`Open ${slides[tailIndex].alt}`}
-            >
-              <Image
-                src={slides[tailIndex].src}
-                alt={slides[tailIndex].alt}
-                fill
-                sizes="(max-width: 1280px) 40vw, 360px"
-                className="object-cover object-top"
-              />
-            </motion.button>
-
-            <motion.button
-              type="button"
-              onClick={() => setSelectedIndex(nextIndex)}
-              animate={{ rotate: -5, x: 14, y: 10, scale: 0.96 }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute inset-y-4 right-2 z-10 hidden w-[62%] cursor-zoom-in overflow-hidden rounded-[1.9rem] shadow-[0_24px_65px_rgba(15,23,42,0.2)] sm:block"
-              aria-label={`Open ${slides[nextIndex].alt}`}
-            >
-              <Image
-                src={slides[nextIndex].src}
-                alt={slides[nextIndex].alt}
-                fill
-                sizes="(max-width: 1280px) 48vw, 420px"
-                className="object-cover object-top"
-              />
-            </motion.button>
-
-            <AnimatePresence mode="wait">
-              <motion.button
-                key={slides[activeIndex].src}
+      <div className="relative overflow-hidden rounded-[2.25rem] bg-[radial-gradient(circle_at_top_left,rgba(96,165,250,0.14),transparent_38%),linear-gradient(180deg,rgba(255,255,255,0.76)_0%,rgba(219,234,254,0.58)_100%)] p-3 shadow-[0_28px_90px_rgba(15,23,42,0.12)] dark:bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.16),transparent_38%),linear-gradient(180deg,rgba(15,23,42,0.82)_0%,rgba(8,15,30,0.95)_100%)] sm:p-4 md:p-5">
+        <div className="relative overflow-hidden rounded-[1.9rem] bg-slate-950/5">
+          <motion.div
+            animate={
+              shouldReduceMotion ? { x: "0%" } : { x: `-${activeIndex * 100}%` }
+            }
+            transition={{
+              duration: shouldReduceMotion ? 0 : 0.8,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className="flex will-change-transform"
+            drag={shouldReduceMotion ? false : "x"}
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.06}
+            onDragEnd={(_, info) => {
+              if (info.offset.x <= -80) goTo(activeIndex + 1);
+              if (info.offset.x >= 80) goTo(activeIndex - 1);
+            }}
+          >
+            {slides.map((slide, index) => (
+              <button
+                key={slide.src}
                 type="button"
-                onClick={() => setSelectedIndex(activeIndex)}
-                initial={{ opacity: 0, x: 80, rotate: 5, scale: 0.94 }}
-                animate={{ opacity: 1, x: 0, rotate: 0, scale: 1 }}
-                exit={{ opacity: 0, x: -70, rotate: -6, scale: 0.92 }}
-                transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute inset-0 z-20 cursor-zoom-in overflow-hidden rounded-[2rem] shadow-[0_34px_90px_rgba(15,23,42,0.24)]"
-                aria-label={`Open ${slides[activeIndex].alt}`}
+                onClick={() => setSelectedIndex(index)}
+                className="relative block h-[24rem] min-w-full cursor-zoom-in overflow-hidden bg-slate-950 sm:h-[30rem] lg:h-[38rem]"
+                aria-label={`Open ${slide.alt}`}
               >
                 <Image
-                  src={slides[activeIndex].src}
-                  alt={slides[activeIndex].alt}
+                  src={slide.src}
+                  alt={slide.alt}
                   fill
-                  priority
-                  sizes="(max-width: 1280px) 70vw, 720px"
-                  className="object-contain object-top bg-white/20 dark:bg-slate-950/20"
+                  priority={index === 0}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 92vw, 1200px"
+                  className="object-cover object-top"
                 />
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.06)_0%,rgba(15,23,42,0.14)_40%,rgba(15,23,42,0.66)_100%)]" />
-              </motion.button>
-            </AnimatePresence>
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.12)_0%,rgba(15,23,42,0.16)_30%,rgba(15,23,42,0.72)_100%)]" />
+              </button>
+            ))}
+          </motion.div>
+
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 p-4 sm:p-6 lg:p-8">
+            <div className="flex items-end justify-between gap-4">
+              <div className="pointer-events-auto max-w-xl rounded-[1.5rem] border border-white/15 bg-slate-950/35 p-4 backdrop-blur-md sm:p-5">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={`copy-${activeIndex}`}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.32 }}
+                  >
+                    <p className="font-mono text-[10px] uppercase tracking-[0.34em] text-gold md:text-xs">
+                      {slides[activeIndex].label}
+                    </p>
+                    <p className="mt-3 font-display text-3xl font-black leading-tight text-white md:text-5xl">
+                      Anna Ajibade
+                    </p>
+                    <p className="mt-3 max-w-md text-sm text-white/72 md:text-base">
+                      {slides[activeIndex].note}
+                    </p>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              <div className="pointer-events-auto hidden items-center gap-3 md:flex">
+                <button
+                  type="button"
+                  onClick={() => goTo(activeIndex - 1)}
+                  className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-slate-950/35 text-white transition-colors duration-300 hover:border-white/35 hover:bg-slate-950/55"
+                  aria-label="Previous slide"
+                >
+                  <HiArrowLeft size={18} />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => goTo(activeIndex + 1)}
+                  className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-slate-950/35 text-white transition-colors duration-300 hover:border-white/35 hover:bg-slate-950/55"
+                  aria-label="Next slide"
+                >
+                  <HiArrowRight size={18} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4 flex flex-col gap-4 px-1 sm:mt-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            {slides.map((slide, index) => (
+              <button
+                key={slide.src}
+                type="button"
+                onClick={() => goTo(index)}
+                className={`overflow-hidden rounded-full transition-all duration-300 ${
+                  index === activeIndex
+                    ? "h-2.5 w-14 bg-gold"
+                    : "h-2.5 w-2.5 bg-gold/35 hover:bg-gold/60"
+                }`}
+                aria-label={`View slide ${index + 1}`}
+              />
+            ))}
           </div>
 
-          <div className="relative z-30 px-2 md:px-4 xl:max-w-md">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={`copy-${activeIndex}`}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.45 }}
+          <div className="grid grid-cols-3 gap-2 sm:flex sm:items-center">
+            {slides.map((slide, index) => (
+              <button
+                key={`${slide.src}-thumb`}
+                type="button"
+                onClick={() => goTo(index)}
+                className={`relative h-16 overflow-hidden rounded-[1rem] border transition-all duration-300 sm:w-20 ${
+                  index === activeIndex
+                    ? "border-gold shadow-[0_14px_35px_rgba(37,99,235,0.28)]"
+                    : "border-white/10 opacity-65 hover:opacity-100"
+                }`}
+                aria-label={`Select ${slide.label}`}
               >
-                <p className="font-mono text-[10px] uppercase tracking-[0.34em] text-gold md:text-xs">
-                  {slides[activeIndex].label}
-                </p>
-                <p className="mt-3 font-display text-3xl font-black leading-tight text-cream md:text-5xl">
-                  Anna Ajibade
-                </p>
-                <p className="mt-3 max-w-md text-sm text-cream/70 md:text-base">
-                  {slides[activeIndex].note}
-                </p>
-              </motion.div>
-            </AnimatePresence>
-
-            <div className="mt-6 flex items-center gap-3">
-              {slides.map((slide, index) => (
-                <button
-                  key={slide.src}
-                  type="button"
-                  onClick={() => setActiveIndex(index)}
-                  className={`overflow-hidden rounded-full transition-all duration-300 ${
-                    index === activeIndex
-                      ? "h-2.5 w-12 bg-gold"
-                      : "h-2.5 w-2.5 bg-gold/35 hover:bg-gold/60"
-                  }`}
-                  aria-label={`View slide ${index + 1}`}
+                <Image
+                  src={slide.src}
+                  alt={slide.alt}
+                  fill
+                  sizes="80px"
+                  className="object-cover object-top"
                 />
-              ))}
-            </div>
+              </button>
+            ))}
           </div>
         </div>
       </div>

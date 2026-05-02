@@ -8,7 +8,7 @@ const highlights = [
     desc: "Across education, youth development, leadership, community engagement, and social impact initiatives.",
   },
   {
-    title: "NGN 15 Million+ Mobilised",
+    title: "USD 20,000 Mobilised",
     desc: "Raised through structured collaboration with teams, partners, and stakeholders.",
   },
   {
@@ -89,7 +89,7 @@ export default function About() {
               ref={setRef(6)}
               className="reveal text-base leading-relaxed text-cream/70"
             >
-              I have also successfully mobilised over 15 million naira in
+              I have also successfully mobilised over 20,000 USD in
               funding, working with teams, partners, and stakeholders to
               translate ideas into structured, fundable, and sustainable
               projects. My work sits at the intersection of strategy and

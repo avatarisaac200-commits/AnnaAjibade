@@ -6,7 +6,7 @@ import PhotoRail from "@/components/PhotoRail";
 
 const stats = [
   { value: "150+", label: "Projects delivered" },
-  { value: "NGN 15M+", label: "Funding mobilised" },
+  { value: "USD 20,000", label: "Funding mobilised" },
   { value: "3+", label: "Years of focused delivery" },
 ];
 

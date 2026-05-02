@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { HiLocationMarker, HiMail, HiPhone } from "react-icons/hi";
-import { FiLinkedin, FiMessageCircle, FiTwitter } from "react-icons/fi";
+import { FiInstagram, FiLinkedin, FiMessageCircle } from "react-icons/fi";
 import useRevealRefs from "@/components/useRevealRefs";
 
 const WHATSAPP_NUMBER = "2349162057661";
@@ -236,13 +236,23 @@ export default function Contact() {
               </p>
               <div className="flex gap-4">
                 {[
-                  { icon: FiLinkedin, label: "LinkedIn", href: "#" },
-                  { icon: FiTwitter, label: "Twitter", href: "#" },
+                  {
+                    icon: FiLinkedin,
+                    label: "LinkedIn",
+                    href: "https://linkedin.com/in/anna-ajibade-35251a300",
+                  },
+                  {
+                    icon: FiInstagram,
+                    label: "Instagram",
+                    href: "https://www.instagram.com/_iam_lucius/",
+                  },
                 ].map((item) => (
                   <a
                     key={item.label}
                     href={item.href}
                     aria-label={item.label}
+                    target="_blank"
+                    rel="noreferrer"
                     className="flex h-12 w-12 items-center justify-center rounded-xl border border-gold/20 text-cream/50 transition-all duration-300 hover:border-gold/50 hover:text-gold"
                   >
                     <item.icon size={18} />
