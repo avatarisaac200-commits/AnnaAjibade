@@ -56,7 +56,7 @@ export default function PhotoRail() {
 
     const timer = window.setInterval(() => {
       setActiveIndex((current) => (current + 1) % slides.length);
-    }, 4200);
+    }, 4600);
 
     return () => window.clearInterval(timer);
   }, [selectedIndex]);
@@ -76,89 +76,79 @@ export default function PhotoRail() {
     setActiveIndex((index + slides.length) % slides.length);
   };
 
+  const activeSlide = slides[activeIndex];
+
   return (
     <>
       <div className="relative overflow-hidden rounded-[2.25rem] bg-[radial-gradient(circle_at_top_left,rgba(96,165,250,0.14),transparent_38%),linear-gradient(180deg,rgba(255,255,255,0.76)_0%,rgba(219,234,254,0.58)_100%)] p-3 shadow-[0_28px_90px_rgba(15,23,42,0.12)] dark:bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.16),transparent_38%),linear-gradient(180deg,rgba(15,23,42,0.82)_0%,rgba(8,15,30,0.95)_100%)] sm:p-4 md:p-5">
         <div className="relative overflow-hidden rounded-[1.9rem] bg-slate-950/5">
-          <motion.div
-            animate={
-              shouldReduceMotion ? { x: "0%" } : { x: `-${activeIndex * 100}%` }
-            }
-            transition={{
-              duration: shouldReduceMotion ? 0 : 0.8,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="flex will-change-transform"
-            drag={shouldReduceMotion ? false : "x"}
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.06}
-            onDragEnd={(_, info) => {
-              if (info.offset.x <= -80) goTo(activeIndex + 1);
-              if (info.offset.x >= 80) goTo(activeIndex - 1);
-            }}
-          >
-            {slides.map((slide, index) => (
-              <button
-                key={slide.src}
+          <div className="relative h-[24rem] sm:h-[30rem] lg:h-[38rem]">
+            <AnimatePresence mode="wait">
+              <motion.button
+                key={activeSlide.src}
                 type="button"
-                onClick={() => setSelectedIndex(index)}
-                className="relative block h-[24rem] min-w-full cursor-zoom-in overflow-hidden bg-slate-950 sm:h-[30rem] lg:h-[38rem]"
-                aria-label={`Open ${slide.alt}`}
+                onClick={() => setSelectedIndex(activeIndex)}
+                initial={shouldReduceMotion ? false : { opacity: 0, scale: 1.02 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.985 }}
+                transition={{ duration: shouldReduceMotion ? 0.12 : 0.55, ease: "easeOut" }}
+                className="absolute inset-0 block w-full cursor-zoom-in overflow-hidden bg-slate-950"
+                aria-label={`Open ${activeSlide.alt}`}
               >
                 <Image
-                  src={slide.src}
-                  alt={slide.alt}
+                  src={activeSlide.src}
+                  alt={activeSlide.alt}
                   fill
-                  priority={index === 0}
+                  priority
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 92vw, 1200px"
                   className="object-cover object-top"
                 />
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.12)_0%,rgba(15,23,42,0.16)_30%,rgba(15,23,42,0.72)_100%)]" />
-              </button>
-            ))}
-          </motion.div>
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.1)_0%,rgba(15,23,42,0.14)_34%,rgba(15,23,42,0.72)_100%)]" />
+              </motion.button>
+            </AnimatePresence>
 
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 p-4 sm:p-6 lg:p-8">
-            <div className="flex items-end justify-between gap-4">
-              <div className="pointer-events-auto max-w-xl rounded-[1.5rem] border border-white/15 bg-slate-950/35 p-4 backdrop-blur-md sm:p-5">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={`copy-${activeIndex}`}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.32 }}
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 p-4 sm:p-6 lg:p-8">
+              <div className="flex items-end justify-between gap-4">
+                <div className="pointer-events-auto max-w-xl rounded-[1.5rem] border border-white/15 bg-slate-950/35 p-4 backdrop-blur-md sm:p-5">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={`copy-${activeIndex}`}
+                      initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
+                      transition={{ duration: 0.24 }}
+                    >
+                      <p className="font-mono text-[10px] uppercase tracking-[0.34em] text-gold md:text-xs">
+                        {activeSlide.label}
+                      </p>
+                      <p className="mt-3 font-display text-3xl font-black leading-tight text-white md:text-5xl">
+                        Anna Ajibade
+                      </p>
+                      <p className="mt-3 max-w-md text-sm text-white/72 md:text-base">
+                        {activeSlide.note}
+                      </p>
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+
+                <div className="pointer-events-auto hidden items-center gap-3 md:flex">
+                  <button
+                    type="button"
+                    onClick={() => goTo(activeIndex - 1)}
+                    className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-slate-950/35 text-white transition-colors duration-300 hover:border-white/35 hover:bg-slate-950/55"
+                    aria-label="Previous slide"
                   >
-                    <p className="font-mono text-[10px] uppercase tracking-[0.34em] text-gold md:text-xs">
-                      {slides[activeIndex].label}
-                    </p>
-                    <p className="mt-3 font-display text-3xl font-black leading-tight text-white md:text-5xl">
-                      Anna Ajibade
-                    </p>
-                    <p className="mt-3 max-w-md text-sm text-white/72 md:text-base">
-                      {slides[activeIndex].note}
-                    </p>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-
-              <div className="pointer-events-auto hidden items-center gap-3 md:flex">
-                <button
-                  type="button"
-                  onClick={() => goTo(activeIndex - 1)}
-                  className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-slate-950/35 text-white transition-colors duration-300 hover:border-white/35 hover:bg-slate-950/55"
-                  aria-label="Previous slide"
-                >
-                  <HiArrowLeft size={18} />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => goTo(activeIndex + 1)}
-                  className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-slate-950/35 text-white transition-colors duration-300 hover:border-white/35 hover:bg-slate-950/55"
-                  aria-label="Next slide"
-                >
-                  <HiArrowRight size={18} />
-                </button>
+                    <HiArrowLeft size={18} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => goTo(activeIndex + 1)}
+                    className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-slate-950/35 text-white transition-colors duration-300 hover:border-white/35 hover:bg-slate-950/55"
+                    aria-label="Next slide"
+                  >
+                    <HiArrowRight size={18} />
+                  </button>
+                </div>
               </div>
             </div>
           </div>

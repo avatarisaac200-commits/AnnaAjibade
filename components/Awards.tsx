@@ -27,8 +27,8 @@ export default function Awards() {
           <div className="overflow-hidden rounded-[2rem] border border-gold/15 bg-cream/5 p-3 shadow-[0_24px_70px_rgba(15,23,42,0.12)]">
             <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-slate-950">
               <Image
-                src="/awards/25under25-placeholder.svg"
-                alt="Placeholder for the Nigeria 25 Under 25 voting portal artwork"
+                src={imagePath}
+                alt="Nigeria 25 Under 25 voting portal artwork"
                 fill
                 sizes="(max-width: 1024px) 100vw, 44vw"
                 className="object-cover"
@@ -36,7 +36,7 @@ export default function Awards() {
             </div>
           </div>
           <p className="mt-4 font-mono text-xs uppercase tracking-[0.24em] text-cream/40">
-            Replace this placeholder by adding the raw image file at
+            Raw image path:
             <span className="ml-1 text-gold">{imagePath}</span>
           </p>
         </div>
