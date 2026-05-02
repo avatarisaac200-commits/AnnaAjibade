@@ -101,7 +101,7 @@ export default function PhotoRail() {
                   fill
                   priority
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 92vw, 1200px"
-                  className="object-cover object-top"
+                  className="scale-[1.12] object-cover object-top sm:scale-[1.16] lg:scale-[1.1]"
                 />
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.1)_0%,rgba(15,23,42,0.14)_34%,rgba(15,23,42,0.72)_100%)]" />
               </motion.button>
@@ -189,7 +189,7 @@ export default function PhotoRail() {
                   alt={slide.alt}
                   fill
                   sizes="80px"
-                  className="object-cover object-top"
+                  className="scale-110 object-cover object-top"
                 />
               </button>
             ))}

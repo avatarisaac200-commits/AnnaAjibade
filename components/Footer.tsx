@@ -15,6 +15,7 @@ export default function Footer() {
             { label: "Services", href: "#services" },
             { label: "Impact", href: "#impact" },
             { label: "Awards", href: "#awards" },
+            { label: "Reviews", href: "#reviews" },
             { label: "Contact", href: "#contact" },
           ].map((item) => (
             <a

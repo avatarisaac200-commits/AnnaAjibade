@@ -10,6 +10,7 @@ const links = [
   { label: "Services", href: "#services" },
   { label: "Impact Footprints", href: "#impact" },
   { label: "Awards", href: "#awards" },
+  { label: "Reviews", href: "#reviews" },
   { label: "Contact", href: "#contact" },
 ];
 
