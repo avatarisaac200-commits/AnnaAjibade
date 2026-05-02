@@ -35,10 +35,6 @@ export default function Awards() {
               />
             </div>
           </div>
-          <p className="mt-4 font-mono text-xs uppercase tracking-[0.24em] text-cream/40">
-            Raw image path:
-            <span className="ml-1 text-gold">{imagePath}</span>
-          </p>
         </div>
 
         <div>
