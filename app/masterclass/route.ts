@@ -106,7 +106,7 @@ async function buildFacilitatorsSection() {
   <div class="section-tag">08 A· Facilitators</div>
   <h2 class="section-title">Meet the <em>facilitators.</em></h2>
   <p class="section-lead">A lineup of facilitators bringing real-world perspectives across leadership, public health, execution, and impact-driven work.</p>
-  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:60px">
+  <div class="facilitators-grid" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:60px">
     ${cards}
   </div>
 </section>
@@ -159,6 +159,42 @@ function handleSubmit(){
 </script>`;
 }
 
+function buildResponsiveStyle() {
+  return `<style>
+@media (max-width: 900px){
+  .facilitators-grid{
+    grid-template-columns:1fr !important;
+  }
+}
+
+@media (max-width: 640px){
+  .facilitators-grid{
+    gap:18px !important;
+    margin-top:36px !important;
+  }
+
+  .facilitators-grid article{
+    padding:14px !important;
+  }
+
+  .facilitators-grid article img{
+    object-position:center 10% !important;
+  }
+
+  .facilitators-grid article div[style*="font-size:28px"]{
+    font-size:24px !important;
+  }
+
+  .facilitators-grid article p{
+    font-size:15px !important;
+    line-height:1.75 !important;
+    color:var(--text) !important;
+    font-weight:400 !important;
+  }
+}
+</style>`;
+}
+
 export async function GET() {
   const filePath = path.join(
     process.cwd(),
@@ -170,6 +206,7 @@ export async function GET() {
   const facilitatorsSection = await buildFacilitatorsSection();
 
   html = html.replace(/2025/g, "2026");
+  html = html.replace("</head>", `${buildResponsiveStyle()}\n</head>`);
   html = html.replace(
     /<div class="countdown-label">[\s\S]*?<\/div>/,
     '<div class="countdown-label">Masterclass Starts In</div>'
