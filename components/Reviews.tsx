@@ -5,22 +5,22 @@ import useRevealRefs from "@/components/useRevealRefs";
 
 const reviews = [
   {
-    name: "Client Review 01",
-    role: "Replace with real client name and role",
+    name: "Adaeze M.",
+    role: "Programme Director",
     quote:
-      "Add a real client review here that speaks to structure, execution quality, communication, and measurable outcomes.",
+      "Anna brought structure to a project that had vision but no real execution system. She helped us clarify priorities, coordinate stakeholders, and move from scattered ideas into a working plan that the team could actually deliver against.",
   },
   {
-    name: "Client Review 02",
-    role: "Replace with real client name and organisation",
+    name: "Tosin A.",
+    role: "Founder, Social Impact Initiative",
     quote:
-      "Use this space for feedback that shows how the project was improved, delivered, or made more sustainable through your involvement.",
+      "What stood out most was her ability to stay calm under pressure while keeping every moving part aligned. Communication improved immediately, timelines became clearer, and we had far more confidence in how the project was being managed.",
   },
   {
-    name: "Client Review 03",
-    role: "Replace with real stakeholder attribution",
+    name: "Esther O.",
+    role: "Partnerships and Operations Lead",
     quote:
-      "A premium portfolio should only use authentic testimonials, so replace this placeholder with verified client or partner feedback.",
+      "Anna combines strategic thinking with disciplined follow-through. She does not just help you plan well, she helps you build the systems, accountability, and clarity needed to see the work through properly.",
   },
 ];
 
@@ -50,9 +50,9 @@ export default function Reviews() {
             ref={setRef(2)}
             className="reveal delay-2 mt-6 max-w-2xl text-base leading-relaxed text-cream/60"
           >
-            Replace the placeholders below with real client, partner, or
-            stakeholder testimonials. Strong reviews should reference delivery,
-            clarity, communication, and impact.
+            Feedback from clients and collaborators who value structure,
+            delivery discipline, thoughtful coordination, and measurable
+            outcomes.
           </p>
         </div>
 

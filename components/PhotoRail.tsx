@@ -11,6 +11,8 @@ type Slide = {
   alt: string;
   label: string;
   note: string;
+  imageClassName?: string;
+  thumbClassName?: string;
 };
 
 const slides: Slide[] = [
@@ -19,30 +21,45 @@ const slides: Slide[] = [
     alt: "Anna Ajibade portrait one",
     label: "Programme Lead",
     note: "Cross-sector delivery",
+    imageClassName:
+      "scale-[1.18] object-cover object-[center_12%] sm:scale-[1.22] lg:scale-[1.34] lg:object-[center_10%]",
+    thumbClassName: "scale-[1.16] object-cover object-[center_12%]",
   },
   {
     src: "/photos/amara-2.jpg",
     alt: "Anna Ajibade portrait two",
     label: "Strategy Partner",
     note: "Mission-aligned execution",
+    imageClassName:
+      "scale-[1.16] object-cover object-[center_14%] sm:scale-[1.2] lg:scale-[1.3] lg:object-[center_12%]",
+    thumbClassName: "scale-[1.14] object-cover object-[center_14%]",
   },
   {
     src: "/photos/amara-3.jpg",
     alt: "Anna Ajibade portrait three",
     label: "Stakeholder Builder",
     note: "Multi-stakeholder alignment",
+    imageClassName:
+      "scale-[1.18] object-cover object-[center_13%] sm:scale-[1.22] lg:scale-[1.32] lg:object-[center_11%]",
+    thumbClassName: "scale-[1.15] object-cover object-[center_13%]",
   },
   {
     src: "/photos/amara-4.jpg",
     alt: "Anna Ajibade portrait four",
     label: "Impact Operator",
     note: "Systems with measurable outcomes",
+    imageClassName:
+      "scale-[1.15] object-cover object-[center_15%] sm:scale-[1.19] lg:scale-[1.28] lg:object-[center_12%]",
+    thumbClassName: "scale-[1.13] object-cover object-[center_15%]",
   },
   {
     src: "/photos/amara-5.jpg",
     alt: "Anna Ajibade portrait five",
     label: "Trusted Advisor",
     note: "Clear decisions under complexity",
+    imageClassName:
+      "scale-[1.17] object-cover object-[center_11%] sm:scale-[1.21] lg:scale-[1.33] lg:object-[center_9%]",
+    thumbClassName: "scale-[1.15] object-cover object-[center_11%]",
   },
 ];
 
@@ -80,9 +97,9 @@ export default function PhotoRail() {
 
   return (
     <>
-      <div className="relative overflow-hidden rounded-[2.25rem] bg-[radial-gradient(circle_at_top_left,rgba(96,165,250,0.14),transparent_38%),linear-gradient(180deg,rgba(255,255,255,0.76)_0%,rgba(219,234,254,0.58)_100%)] p-3 shadow-[0_28px_90px_rgba(15,23,42,0.12)] dark:bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.16),transparent_38%),linear-gradient(180deg,rgba(15,23,42,0.82)_0%,rgba(8,15,30,0.95)_100%)] sm:p-4 md:p-5">
+      <div className="relative mx-auto max-w-[72rem] overflow-hidden rounded-[2.25rem] bg-[radial-gradient(circle_at_top_left,rgba(96,165,250,0.14),transparent_38%),linear-gradient(180deg,rgba(255,255,255,0.76)_0%,rgba(219,234,254,0.58)_100%)] p-3 shadow-[0_28px_90px_rgba(15,23,42,0.12)] dark:bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.16),transparent_38%),linear-gradient(180deg,rgba(15,23,42,0.82)_0%,rgba(8,15,30,0.95)_100%)] sm:p-4 md:p-5">
         <div className="relative overflow-hidden rounded-[1.9rem] bg-slate-950/5">
-          <div className="relative h-[24rem] sm:h-[30rem] lg:h-[38rem]">
+          <div className="relative h-[26rem] sm:h-[32rem] lg:mx-auto lg:h-[46rem] lg:max-w-[52rem] xl:h-[48rem]">
             <AnimatePresence mode="wait">
               <motion.button
                 key={activeSlide.src}
@@ -101,7 +118,10 @@ export default function PhotoRail() {
                   fill
                   priority
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 92vw, 1200px"
-                  className="scale-[1.12] object-cover object-top sm:scale-[1.16] lg:scale-[1.1]"
+                  className={
+                    activeSlide.imageClassName ??
+                    "scale-[1.18] object-cover object-[center_12%] lg:scale-[1.3]"
+                  }
                 />
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.1)_0%,rgba(15,23,42,0.14)_34%,rgba(15,23,42,0.72)_100%)]" />
               </motion.button>
@@ -189,7 +209,9 @@ export default function PhotoRail() {
                   alt={slide.alt}
                   fill
                   sizes="80px"
-                  className="scale-110 object-cover object-top"
+                  className={
+                    slide.thumbClassName ?? "scale-[1.14] object-cover object-[center_12%]"
+                  }
                 />
               </button>
             ))}
